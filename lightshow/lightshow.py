@@ -1,7 +1,10 @@
 import threading
-import time
+import asyncio
 
 from .animations import *
+from .animations.rainbow import Rainbow
+
+# TODO Figure out how to get settings back from the website and update the Lightshow class & animations
 
 
 class Lightshow:
@@ -20,19 +23,17 @@ class Lightshow:
         self.strip = strip
 
         # Thread for running animations
-        self._run_thread = threading.Thread(name="animation-thread",
-                                            target=self.foo)
+        self._run_thread = threading.Thread(name="animation-thread", target=self._run_animation)
 
         # Boolean value (on = True; off = False)
         self.state = False
 
         # List of animation classes
-        self._animations = ["rainbow", "strobe"]  # Load this from animations backend
+        self.animations = ["rainbow"]
+        self._animations = [Rainbow(strip)]  # Load this from animations backend
 
         # Animation class of current animation
-        self._animation = "rainbow"
-
-        self.settings = [{"name": "brightness", "type": "slider", "range": (0, 255), "value": 255}]
+        self.animation = self._animations[0]
 
     @property
     def state(self):
@@ -42,16 +43,19 @@ class Lightshow:
     def state(self, value):
         self._state = value
 
-        # Not sure if I should do this yet
         if value:
-            self._start_animation()
+            if not self._run_thread.is_alive():
+                self._run_thread.start()
         else:
-            self._stop_animation()
+            if self._run_thread.is_alive():
+                self.animation.stop()
+                clear_strand(self.strip)
+                self._run_thread.join()
 
-    @property
-    def animations(self):
-        # Return string names of animations
-        return self._animations
+    # @property
+    # def animations(self):
+    #     # Return string names of animations
+    #     return self._animations
 
     @property
     def animation(self):
@@ -60,21 +64,20 @@ class Lightshow:
 
     @animation.setter
     def animation(self, value):
-        # Set animation class from string name input
-        self._animation = value
+        if isinstance(value, str):
+            # TODO set animation class from string
+            pass
+        else:
+            # Set animation class from string name input
+            self._animation = value
 
-    def _start_animation(self):
-        if not self._run_thread.is_alive():
-            self._run_thread.start()
+    def _run_animation(self):
+        """
+        Private method for starting lightshow animations
 
-    def foo(self):
-        while self.state:
-            print("hello world")
-            time.sleep(1)
-
-    def _stop_animation(self):
-        if self._run_thread.is_alive():
-            self._run_thread.join(1)
+        :return:
+        """
+        asyncio.run(self.animation.run())
 
 
-lightshow = Lightshow(None)
+lightshow = Lightshow(PixelStrip(100, 21))

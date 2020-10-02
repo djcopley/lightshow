@@ -29,7 +29,6 @@ class Lightshow:
         self.state = False
 
         # List of animation classes
-        self.animations = ["rainbow"]
         self._animations = [Rainbow(strip)]  # Load this from animations backend
 
         # Animation class of current animation
@@ -52,10 +51,10 @@ class Lightshow:
                 clear_strand(self.strip)
                 self._run_thread.join()
 
-    # @property
-    # def animations(self):
-    #     # Return string names of animations
-    #     return self._animations
+    @property
+    def animations(self):
+        # Return string names of animations
+        return self._animations
 
     @property
     def animation(self):
@@ -80,4 +79,4 @@ class Lightshow:
         asyncio.run(self.animation.run())
 
 
-lightshow = Lightshow(PixelStrip(100, 21))
+lightshow = Lightshow(PixelStrip(100, 21))  # PixelCount, PinNumber

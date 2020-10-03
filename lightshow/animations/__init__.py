@@ -1,6 +1,3 @@
-from rpi_ws281x import PixelStrip
-
-
 def pixel_color(r, g, b, w=0):
     """
     Color for our LED strand. For some reason our ws chips are RBG ordered.

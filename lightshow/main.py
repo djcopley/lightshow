@@ -1,9 +1,9 @@
 from .views import *
-from .app import socketio
+from .app import app, socketio
 
 
 def main():
-    socketio.run()
+    socketio.run(app)
 
 
 if __name__ == '__main__':

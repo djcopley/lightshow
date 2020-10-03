@@ -1,7 +1,5 @@
 import asyncio
 
-from rpi_ws281x import PixelStrip
-
 from . import pixel_color
 from .animation import Animation
 

@@ -84,6 +84,6 @@ class Animation:
         :return: List of Settings
         """
         settings = [
-            {"name": "brightness", "type": "slider", "range": (0, 100), "value": self.brightness}
+            {"name": "brightness", "type": "slider", "range": (0, 255), "value": self.brightness}
         ]
         return settings

@@ -1,8 +1,11 @@
 import threading
 import asyncio
 
+from rpi_ws281x import PixelStrip
+
 from .animations import *
 from .animations.rainbow import Rainbow
+
 
 # TODO Figure out how to get settings back from the website and update the Lightshow class & animations
 
@@ -29,10 +32,10 @@ class Lightshow:
         self.state = False
 
         # List of animation classes
-        self._animations = [Rainbow(strip)]  # Load this from animations backend
+        # self._animations = [Rainbow(strip)]  # Load this from animations backend
 
         # Animation class of current animation
-        self.animation = self._animations[0]
+        self.animation = Rainbow(self.strip)
 
     @property
     def state(self):
@@ -51,24 +54,24 @@ class Lightshow:
                 clear_strand(self.strip)
                 self._run_thread.join()
 
-    @property
-    def animations(self):
-        # Return string names of animations
-        return self._animations
+    # @property
+    # def animations(self):
+    #     # Return string names of animations
+    #     return self._animations
 
-    @property
-    def animation(self):
-        # Return string name of animation
-        return self._animation
-
-    @animation.setter
-    def animation(self, value):
-        if isinstance(value, str):
-            # TODO set animation class from string
-            pass
-        else:
-            # Set animation class from string name input
-            self._animation = value
+    # @property
+    # def animation(self):
+    #     # Return string name of animation
+    #     return self._animation
+    #
+    # @animation.setter
+    # def animation(self, value):
+    #     if isinstance(value, str):
+    #         # TODO set animation class from string
+    #         pass
+    #     else:
+    #         # Set animation class from string name input
+    #         self._animation = value
 
     def _run_animation(self):
         """
@@ -79,4 +82,7 @@ class Lightshow:
         asyncio.run(self.animation.run())
 
 
-lightshow = Lightshow(PixelStrip(100, 21))  # PixelCount, PinNumber
+# Start the strip and create a lightstrip object
+_strip = PixelStrip(100, 21)
+_strip.begin()
+lightshow = Lightshow(_strip)  # PixelCount, PinNumber

@@ -26,13 +26,13 @@ class Lightshow:
         self.strip = strip
 
         # Thread for running animations
-        self._run_thread = threading.Thread(name="animation-thread", target=self._run_animation)
+        self._run_thread = None
 
         # Boolean value (on = True; off = False)
         self.state = False
 
         # List of animation classes
-        # self._animations = [Rainbow(strip)]  # Load this from animations backend
+        self._animations = [Rainbow(strip)]  # Load this from animations backend
 
         # Animation class of current animation
         self.animation = Rainbow(self.strip)
@@ -46,32 +46,38 @@ class Lightshow:
         self._state = value
 
         if value:
-            if not self._run_thread.is_alive():
+            if not getattr(self._run_thread, "is_alive", lambda: False)():
+                # Create a new animation-thread
+                self._run_thread = threading.Thread(name="animation-thread", target=self._run_animation)
+                # Start the thread
                 self._run_thread.start()
         else:
-            if self._run_thread.is_alive():
+            if getattr(self._run_thread, "is_alive", lambda: False)():
+                # Stop the animation
                 self.animation.stop()
-                clear_strand(self.strip)
+                # Wait for animation to stop
                 self._run_thread.join()
+                # Clear the LED strand
+                clear_strand(self.strip)
 
-    # @property
-    # def animations(self):
-    #     # Return string names of animations
-    #     return self._animations
+    @property
+    def animations(self):
+        # Return string names of animations
+        return self._animations
 
-    # @property
-    # def animation(self):
-    #     # Return string name of animation
-    #     return self._animation
-    #
-    # @animation.setter
-    # def animation(self, value):
-    #     if isinstance(value, str):
-    #         # TODO set animation class from string
-    #         pass
-    #     else:
-    #         # Set animation class from string name input
-    #         self._animation = value
+    @property
+    def animation(self):
+        # Return string name of animation
+        return self._animation
+
+    @animation.setter
+    def animation(self, value):
+        # if isinstance(value, str):
+        #     # TODO set animation class from string
+        #     pass
+        # else:
+        # Set animation class from string name input
+        self._animation = value
 
     def _run_animation(self):
         """
@@ -79,6 +85,7 @@ class Lightshow:
 
         :return:
         """
+        # The animations are coroutines
         asyncio.run(self.animation.run())
 
 

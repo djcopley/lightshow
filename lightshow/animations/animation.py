@@ -24,6 +24,8 @@ class Animation:
     Animation base class. All animations should inherit from here.
     """
 
+    __name__ = "Animation"
+
     def __init__(self, strip, brightness=255):
         """
         Animation constructor method.

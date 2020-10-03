@@ -8,6 +8,9 @@ class Rainbow(Animation):
     """
     Rainbow Animation class
     """
+
+    __name__ = "Rainbow"
+
     def __init__(self, strip, brightness=255, delay=50):
         super().__init__(strip, brightness)
         self.delay = delay
@@ -40,6 +43,8 @@ class Rainbow(Animation):
         self.running = True
         while self.running:
             for j in range(256):
+                if not self.running:
+                    break
                 for i in range(self.strip.numPixels()):
                     self.strip.setPixelColor(i, self.color_wheel((i + j) & 255))
                 self.strip.show()

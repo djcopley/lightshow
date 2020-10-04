@@ -12,9 +12,9 @@ def index():
 def on_connect():
     # On connect emit the current settings
     socketio.emit("power", lightshow.state)
-    socketio.emit("animations", list(map(str, lightshow.animations)))
-    socketio.emit("settings", lightshow.animation.get_settings())
-    socketio.emit("current-animation", str(lightshow.animations[0]))
+    socketio.emit("animations", lightshow.animations)
+    socketio.emit("animation", lightshow.animation)
+    socketio.emit("settings", lightshow.settings)
 
 
 @socketio.on('power')
@@ -23,13 +23,14 @@ def handle_power():
     socketio.emit('power', lightshow.state)
 
 
-@socketio.on('settings')
-def handle_settings(_settings):
-    print(_settings)
-    # socketio.emit('settings', lightshow.settings)
+@socketio.on('setting')
+def handle_settings(index, value):
+    lightshow.update_setting(index, value)
+    socketio.emit('settings', lightshow.settings)
 
 
-@socketio.on('animations')
-def handle_animations(_animations):
-    print(_animations)
-    # socketio.emit('current-animation', "rainbow")
+@socketio.on('animation')
+def handle_animations(animation):
+    lightshow.animation = animation
+    socketio.emit('animation', lightshow.animation)
+    socketio.emit('settings', lightshow.settings)

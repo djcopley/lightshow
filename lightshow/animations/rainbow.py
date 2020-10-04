@@ -1,7 +1,7 @@
 import asyncio
 
-from . import pixel_color
 from .animation import Animation
+from . import *
 
 
 class Rainbow(Animation):
@@ -13,15 +13,7 @@ class Rainbow(Animation):
 
     def __init__(self, strip, brightness=255, delay=50):
         super().__init__(strip, brightness)
-        self.delay = delay
-
-    @property
-    def delay(self):
-        return self._delay
-
-    @delay.setter
-    def delay(self, value):
-        self._delay = value
+        self.delay = Slider("delay", delay, (0, 255), 1)
 
     @staticmethod
     def color_wheel(pos):
@@ -40,18 +32,22 @@ class Rainbow(Animation):
             return pixel_color(0, pos * 3, 255 - pos * 3)
 
     async def run(self):
+        # REFACTOR
         self.running = True
         while self.running:
             for j in range(256):
+
+                # REFACTOR
                 if not self.running:
                     break
+
                 for i in range(self.strip.numPixels()):
                     self.strip.setPixelColor(i, self.color_wheel((i + j) & 255))
                 self.strip.show()
-                await asyncio.sleep(self.delay / 1000)
+                await asyncio.sleep(self.delay.value / 1000)
 
     def get_settings(self):
         settings = [
-            {"name": "delay", "type": "slider", "range": (0, 200), "value": self.delay}
+            self.delay
         ]
         return super().get_settings() + settings

@@ -1,22 +1,8 @@
 """
 Base animation class
 """
-from rpi_ws281x import PixelStrip
-
-
-class Setting:
-    def __init__(self, name):
-        self.name = name
-
-
-class Slider(Setting):
-    def __init__(self, name):
-        super().__init__(name)
-
-
-class Color(Setting):
-    def __init__(self, name):
-        super().__init__(name)
+# from rpi_ws281x import PixelStrip
+from . import *
 
 
 class Animation:
@@ -33,7 +19,7 @@ class Animation:
         :param strip: LED light strip object
         """
         self.strip = strip
-        self.brightness = brightness
+        self._brightness = Slider("brightness", brightness, (0, 255), 1)
 
         # Variable used to signal stop to the run loop
         self.running = False
@@ -56,8 +42,9 @@ class Animation:
         :param value: 8bit value (0-255)
         :return: None
         """
-        self._brightness = value & 255
-        self.strip.setBrightness(self._brightness)
+        value = int(value)
+        self._brightness.value = value & 255
+        self.strip.setBrightness(self._brightness.value)
 
     async def run(self):
         """
@@ -86,6 +73,6 @@ class Animation:
         :return: List of Settings
         """
         settings = [
-            {"name": "brightness", "type": "slider", "range": (0, 255), "value": self.brightness}
+            self.brightness
         ]
         return settings

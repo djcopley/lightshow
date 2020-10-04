@@ -72,14 +72,17 @@ class Lightshow:
 
     @animation.setter
     def animation(self, value):
-        self._animation = value
-        self._settings = self._animations[self._animation].get_settings()
         # REFECTOR
         # Perhamps reset method
         if self.state:
             # This is for restarting the animmation... FUcking aWfuL
             self.state = False
+            self._animation = value
+            self._settings = self._animations[self._animation].get_settings()
             self.state = True
+        else:
+            self._animation = value
+            self._settings = self._animations[self._animation].get_settings()
 
     @property
     def settings(self):

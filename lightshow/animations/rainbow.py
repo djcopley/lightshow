@@ -13,7 +13,7 @@ class Rainbow(Animation):
 
     def __init__(self, strip, brightness=255, delay=50):
         super().__init__(strip, brightness)
-        self.delay = Slider("delay", delay, (0, 255), 1)
+        self.delay = Slider("delay", delay, (10, 200), 1)
 
     @staticmethod
     def color_wheel(pos):
@@ -36,13 +36,16 @@ class Rainbow(Animation):
         self.running = True
         while self.running:
             for j in range(256):
+                for i in range(self.strip.numPixels()):
+                    self.strip.setPixelColor(i, self.color_wheel((i + j) & 255))
 
-                # REFACTOR
+                    # REFACTOR
+                    if not self.running:
+                        break
+
                 if not self.running:
                     break
 
-                for i in range(self.strip.numPixels()):
-                    self.strip.setPixelColor(i, self.color_wheel((i + j) & 255))
                 self.strip.show()
                 await asyncio.sleep(self.delay.value / 1000)
 

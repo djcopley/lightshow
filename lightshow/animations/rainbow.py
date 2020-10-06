@@ -1,6 +1,6 @@
 import asyncio
 
-from .animation import Animation
+from .animation import Animation, run_decorator
 from . import *
 
 
@@ -31,21 +31,13 @@ class Rainbow(Animation):
             pos -= 170
             return pixel_color(0, pos * 3, 255 - pos * 3)
 
+    @run_decorator
     async def run(self):
-        # REFACTOR
-        self.running = True
-        while self.running:
+        # Loop until asyncio cancels event
+        while True:
             for j in range(256):
                 for i in range(self.strip.numPixels()):
                     self.strip.setPixelColor(i, self.color_wheel((i + j) & 255))
-
-                    # REFACTOR
-                    if not self.running:
-                        break
-
-                if not self.running:
-                    break
-
                 self.strip.show()
                 await asyncio.sleep(self.delay.value / 1000)
 

@@ -40,27 +40,29 @@ class Lightshow:
     def state(self):
         return self._state
 
-    # REFACTOR
     @state.setter
     def state(self, value):
         self._state = value
 
-        # I spawn a new thread when animations are being started
-        if value:
-            if not getattr(self._run_thread, "is_alive", lambda: False)():
-                pass
-                # Create a new animation-thread
-                self._run_thread = threading.Thread(name="animation-thread", target=self._run_animation)
-                # Start the thread
-                self._run_thread.start()
-        else:
-            if getattr(self._run_thread, "is_alive", lambda: False)():
-                # Stop the animation
-                self._animations[self._animation].stop()
-                # Wait for animation to stop
-                self._run_thread.join()
-                # Clear the LED strand
-                clear_strand(self.strip)
+        # On first cycle self._run_thread = None
+        if self._state and not getattr(self._run_thread, "is_alive", lambda: False)():
+            self._start_thread()
+        elif getattr(self._run_thread, "is_alive", lambda: False)():
+            self._stop_thread()
+
+    def _start_thread(self):
+        # Create a new animation-thread
+        self._run_thread = threading.Thread(name="animation-thread", target=self._run_animation)
+        # Start the thread
+        self._run_thread.start()
+
+    def _stop_thread(self):
+        # Stop the animation
+        self._run_thread.task.cancel()  # Task is async coroutine
+        # Wait for thread to join
+        self._run_thread.join()
+        # Clear the LED strand
+        clear_strand(self.strip)
 
     @property
     def animations(self):
@@ -72,17 +74,9 @@ class Lightshow:
 
     @animation.setter
     def animation(self, value):
-        # REFECTOR
-        # Perhamps reset method
-        if self.state:
-            # This is for restarting the animmation... FUcking aWfuL
-            self.state = False
-            self._animation = value
-            self._settings = self._animations[self._animation].get_settings()
-            self.state = True
-        else:
-            self._animation = value
-            self._settings = self._animations[self._animation].get_settings()
+        self._animation = value
+        self._settings = self._animations[self._animation].get_settings()
+        self._restart_animation()
 
     @property
     def settings(self):
@@ -111,7 +105,18 @@ class Lightshow:
         :return:
         """
         # The animations are coroutines
-        asyncio.run(self._animations[self._animation].run())
+
+        self._run_thread.task = asyncio.create_task(self._animations[self._animation].run())
+
+        async def run_task():
+            await self._run_thread.task
+
+        asyncio.run(run_task())
+
+    def _restart_animation(self):
+        if self.state:
+            self.state = False
+            self.state = True
 
 
 # Start the strip and create a lightstrip object

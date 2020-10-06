@@ -1,7 +1,7 @@
 import asyncio
 
 from . import *
-from .animation import Animation
+from .animation import Animation, run_decorator
 
 
 class Strobe(Animation):
@@ -19,9 +19,9 @@ class Strobe(Animation):
         self.color = Color("color", color)
         self.duty_cycle = Slider("duty cycle", duty_cycle, (0, 1), 0.1)
 
+    @run_decorator
     async def run(self):
-        self.running = True
-        while self.running:
+        while True:
             # period = 1 / freq
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, self.color.value)

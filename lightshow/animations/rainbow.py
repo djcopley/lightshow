@@ -5,15 +5,11 @@ from . import *
 
 
 class Rainbow(Animation):
-    """
-    Rainbow Animation class
-    """
-
     __name__ = "Rainbow"
 
     def __init__(self, strip, brightness=255, delay=50):
         super().__init__(strip, brightness)
-        self.delay = Slider("delay", delay, (10, 200), 1)
+        self.delay = Slider("delay", delay, (0, 200), 1)
 
     @staticmethod
     def color_wheel(pos):

@@ -32,9 +32,6 @@ class Animation:
         self.strip = strip
         self._brightness = Slider("brightness", brightness, (0, 255), 1)
 
-    def __str__(self):
-        return self.__class__.__name__
-
     @property
     def brightness(self):
         """

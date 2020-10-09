@@ -66,7 +66,7 @@ class Lightshow:
 
     @property
     def animations(self):
-        return list(map(str, self._animations))
+        return [i.__name__ for i in self._animations]
 
     @property
     def animation(self):

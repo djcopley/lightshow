@@ -5,7 +5,9 @@ from .animation import Animation, run_decorator
 
 
 class Strobe(Animation):
-    def __init__(self, strip, freq=10, color=pixel_color(255, 255, 255), duty_cycle=0.5):
+    __name__ = "Strobe"
+
+    def __init__(self, strip, brightness=255, freq=10, color=pixel_color(255, 255, 255), duty_cycle=0.5):
         """
         Strobe animation
 
@@ -14,7 +16,7 @@ class Strobe(Animation):
         :param color: Strand color
         :param duty_cycle: Duty cycle (default = 50%)
         """
-        super().__init__(strip)
+        super().__init__(strip, brightness)
         self.freq = Slider("frequency", freq, (1, 50), 1)
         self.color = Color("color", color)
         self.duty_cycle = Slider("duty cycle", duty_cycle, (0, 1), 0.1)

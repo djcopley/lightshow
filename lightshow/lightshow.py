@@ -30,6 +30,11 @@ class Lightshow:
         # List of animation classes
         self._animations = [get_animation(animation)(strip) for animation in querry_animations()]
 
+        # Set all animations to use same brightness so they will be updated uniformly
+        brightness = Slider("brightness", 255, (0, 255))
+        for anim in self._animations:
+            anim._brightness = brightness
+
         # Default to first animation in the list
         self._animation = 0
 

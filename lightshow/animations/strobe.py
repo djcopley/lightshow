@@ -17,7 +17,7 @@ class Strobe(Animation):
         :param duty_cycle: Duty cycle (default = 50%)
         """
         super().__init__(strip, brightness)
-        self.freq = Slider("frequency", freq, (1, 50), 1)
+        self.freq = Slider("frequency", freq, (1, 50))
         self.color = Color("color", color)
         self.duty_cycle = Slider("duty cycle", duty_cycle, (0, 1), 0.1)
 

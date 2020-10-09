@@ -2,7 +2,7 @@ from importlib import import_module
 
 
 def querry_animations():
-    return "rainbow", "rainbowtheater", "colorwipe", "strobe"
+    return "rainbow", "rainbowtheater", "solid", "colorwipe", "strobe"
 
 
 def get_animation(name: str):
@@ -43,7 +43,7 @@ class Setting:
 
 
 class Slider(Setting):
-    def __init__(self, name, value, range, step):
+    def __init__(self, name, value, range, step=1):
         super().__init__(name, value)
         self.range = range  # Tuple
         self.step = step

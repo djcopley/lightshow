@@ -30,7 +30,7 @@ class Animation:
         :param strip: LED light strip object
         """
         self.strip = strip
-        self._brightness = Slider("brightness", brightness, (0, 255), 1)
+        self._brightness = Slider("brightness", brightness, (0, 255))
 
     @property
     def brightness(self):

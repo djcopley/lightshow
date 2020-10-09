@@ -21,8 +21,8 @@ class Colorwipe(Animation):
         """
         super().__init__(strip, brightness)
         self.color_list = color_list
-        self.wipe_delay = Slider("wipe delay", wipe_delay, (0, 100))
-        self.color_change_delay = Slider("color change delay", color_change_delay, (0, 100))
+        self.wipe_delay = Slider("wipe delay", wipe_delay, (10, 100))
+        self.color_change_delay = Slider("color change delay", color_change_delay, (0, 60))
 
     @run_decorator
     async def run(self):

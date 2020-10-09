@@ -9,7 +9,7 @@ class Rainbow(Animation):
 
     def __init__(self, strip, brightness=255, delay=50):
         super().__init__(strip, brightness)
-        self.delay = Slider("delay", delay, (0, 200))
+        self.delay = Slider("delay", delay, (10, 200))
 
     @staticmethod
     def color_wheel(pos):

@@ -7,7 +7,7 @@ from .animation import run_decorator
 
 
 class Randomstrobe(Strobe):
-    __name__ = "Rainbow Strobe"
+    __name__ = "Random Strobe"
 
     def __init__(self, strip, brightness=255, freq=10, duty_cycle=0.5):
         super().__init__(strip, brightness, None, freq, duty_cycle)

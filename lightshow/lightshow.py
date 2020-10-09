@@ -105,13 +105,11 @@ class Lightshow:
         :return:
         """
         # The animations are coroutines
+        async def run_task(run_thread):
+            run_thread.task = asyncio.create_task(self._animations[self._animation].run())
+            await run_thread.task
 
-        self._run_thread.task = asyncio.create_task(self._animations[self._animation].run())
-
-        async def run_task():
-            await self._run_thread.task
-
-        asyncio.run(run_task())
+        asyncio.run(run_task(self._run_thread))
 
     def _restart_animation(self):
         if self.state:

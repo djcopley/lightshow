@@ -6,7 +6,7 @@ import asyncio
 from . import *
 
 
-async def run_decorator(func):
+def run_decorator(func):
     async def decorated(*args, **kwargs):
         try:
             return await func(*args, **kwargs)

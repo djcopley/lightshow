@@ -15,7 +15,7 @@ class Randomstrobe(Strobe):
     @run_decorator
     async def run(self):
         while True:
-            self.color.value = pixel_color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            self.color.value = self.color_wheel(random.randint(0, 255))
 
             # period = 1 / freq
             for i in range(self.strip.numPixels()):

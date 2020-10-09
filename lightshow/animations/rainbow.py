@@ -11,22 +11,6 @@ class Rainbow(Animation):
         super().__init__(strip, brightness)
         self.delay = Slider("delay", delay, (10, 200))
 
-    @staticmethod
-    def color_wheel(pos):
-        """
-        Generate rainbow colors across 0-255 positions.
-
-        :param int pos: Current position
-        """
-        if pos < 85:
-            return pixel_color(pos * 3, 255 - pos * 3, 0)
-        elif pos < 170:
-            pos -= 85
-            return pixel_color(255 - pos * 3, 0, pos * 3)
-        else:
-            pos -= 170
-            return pixel_color(0, pos * 3, 255 - pos * 3)
-
     @run_decorator
     async def run(self):
         # Loop until asyncio cancels event

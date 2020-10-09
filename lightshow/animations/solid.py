@@ -17,3 +17,4 @@ class Solid(Animation):
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, self.color)
             self.strip.show()
+            await asyncio.sleep(1)  # Check for cancel

@@ -7,7 +7,7 @@ from .animation import Animation, run_decorator
 class Strobe(Animation):
     __name__ = "Strobe"
 
-    def __init__(self, strip, brightness=255, freq=10, color=pixel_color(255, 255, 255), duty_cycle=0.5):
+    def __init__(self, strip, brightness=255, color=pixel_color(255, 255, 255), freq=10, duty_cycle=0.5):
         """
         Strobe animation
 

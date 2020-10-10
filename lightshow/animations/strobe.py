@@ -21,19 +21,22 @@ class Strobe(Animation):
         self.color = Color("color", color)
         self.duty_cycle = Slider("duty cycle", duty_cycle, (0, 1), 0.1)
 
+    async def _strobe(self):
+        # period = 1 / freq
+        for i in range(self.strip.numPixels()):
+            self.strip.setPixelColor(i, self.color.value)
+        self.strip.show()
+        await asyncio.sleep((1 / self.freq.value) * self.duty_cycle.value)
+
+        for i in range(self.strip.numPixels()):
+            self.strip.setPixelColor(i, pixel_color(0, 0, 0))
+        self.strip.show()
+        await asyncio.sleep((1 / self.freq.value) * (1 - self.duty_cycle.value))
+
     @run_decorator
     async def run(self):
         while True:
-            # period = 1 / freq
-            for i in range(self.strip.numPixels()):
-                self.strip.setPixelColor(i, self.color.value)
-            self.strip.show()
-            await asyncio.sleep((1 / self.freq.value) * self.duty_cycle.value)
-
-            for i in range(self.strip.numPixels()):
-                self.strip.setPixelColor(i, pixel_color(0, 0, 0))
-            self.strip.show()
-            await asyncio.sleep((1 / self.freq.value) * (1 - self.duty_cycle.value))
+            await self._strobe()
 
     def get_settings(self):
         settings = [

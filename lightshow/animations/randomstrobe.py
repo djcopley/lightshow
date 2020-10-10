@@ -16,14 +16,4 @@ class Randomstrobe(Strobe):
     async def run(self):
         while True:
             self.color.value = self.color_wheel(random.randint(0, 255))
-
-            # period = 1 / freq
-            for i in range(self.strip.numPixels()):
-                self.strip.setPixelColor(i, self.color.value)
-            self.strip.show()
-            await asyncio.sleep((1 / self.freq.value) * self.duty_cycle.value)
-
-            for i in range(self.strip.numPixels()):
-                self.strip.setPixelColor(i, pixel_color(0, 0, 0))
-            self.strip.show()
-            await asyncio.sleep((1 / self.freq.value) * (1 - self.duty_cycle.value))
+            await self._strobe()

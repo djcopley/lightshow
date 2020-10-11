@@ -3,7 +3,7 @@ import asyncio
 from . import Slider, pixel_color
 from .animation import Animation, run_decorator
 
-_color_list = (pixel_color(255, 0, 0), pixel_color(0, 255, 255), pixel_color(0, 0, 255))
+_color_list = (pixel_color(255, 0, 0), pixel_color(0, 255, 0), pixel_color(0, 0, 255))
 
 
 class Colorwipe(Animation):
@@ -21,8 +21,24 @@ class Colorwipe(Animation):
         """
         super().__init__(strip, brightness)
         self.color_list = color_list
-        self.wipe_delay = Slider("wipe delay", wipe_delay, (10, 100))
-        self.color_change_delay = Slider("color change delay", color_change_delay, (0, 60))
+        self._wipe_delay = Slider("Wipe delay", wipe_delay, (10, 100))
+        self._color_change_delay = Slider("Color change delay", color_change_delay, (0, 60))
+
+    @property
+    def wipe_delay(self):
+        return self._wipe_delay.value
+
+    @wipe_delay.setter
+    def wipe_delay(self, value):
+        self._wipe_delay.value = value
+
+    @property
+    def color_change_delay(self):
+        return self._color_change_delay.value
+
+    @color_change_delay.setter
+    def color_change_delay(self, value):
+        self._color_change_delay.value = value
 
     @run_decorator
     async def run(self):
@@ -31,12 +47,12 @@ class Colorwipe(Animation):
                 for i in range(self.strip.numPixels()):
                     self.strip.setPixelColor(i, color)
                     self.strip.show()
-                    await asyncio.sleep(self.wipe_delay.value / 1000)
-                await asyncio.sleep(self.color_change_delay.value)
+                    await asyncio.sleep(self.wipe_delay / 1000)
+                await asyncio.sleep(self.color_change_delay)
 
     def get_settings(self):
         settings = [
-            self.wipe_delay,
-            self.color_change_delay
+            self._wipe_delay,
+            self._color_change_delay
         ]
         return super().get_settings() + settings

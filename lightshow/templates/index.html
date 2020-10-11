@@ -138,15 +138,21 @@
                 case "slider":
                     document.getElementById("settings").innerHTML += "<div class=\"slidecontainer\">\n";
                     document.getElementById("settings").innerHTML +=
-                        "<label htmlFor={0}>{1}</label>\n<input onChange='socket.emit(\"setting\", {5}, this.value)' class=slider type='range' step={6} min={2} max={3} value={4} id={0}>".format(
+                        "<label htmlFor={0}>{0}</label>\n<input onChange='socket.emit(\"setting\", {4}, this.value)' class=slider type='range' step={5} min={1} max={2} value={3} id={0}>".format(
                             settings[index]["name"],
-                            settings[index]["name"].charAt(0).toUpperCase() + settings[index]["name"].slice(1),
                             settings[index]["range"][0], settings[index]["range"][1], settings[index]["value"],
                             index, settings[index]["step"]
                         );
                     document.getElementById("settings").innerHTML += "</div>";
                     break;
                 case "color":
+                    document.getElementById("settings").innerHTML += "<div class=\"color\">\n";
+                    document.getElementById("settings").innerHTML +=
+                        "<label htmlFor={0}>{0}</label>\n<input onChange='socket.emit(\"setting\", {2}, this.value)' class=color type='color' value={1} id={0}>".format(
+                            settings[index]["name"], settings[index]["value"], index
+                        );
+                    document.getElementById("settings").innerHTML += "</div>";
+                    console.log(settings[index]["value"])
                     break;
                 case "text":
                     break;

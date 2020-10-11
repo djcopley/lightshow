@@ -31,7 +31,7 @@ class Lightshow:
         self._animations = [get_animation(animation)(strip) for animation in querry_animations()]
 
         # Set all animations to use same brightness so they will be updated uniformly
-        brightness = Slider("brightness", 255, (0, 255))
+        brightness = Slider("Brightness", 255, (0, 255), callback=self.strip.setBrightness)
         for anim in self._animations:
             anim._brightness = brightness
 
@@ -95,13 +95,7 @@ class Lightshow:
         :param value: Value set
         :return: None
         """
-        # HACK
-        # REFACTOR ASAP
-        value = float(value)
-        if index == 0:
-            self._animations[self._animation].brightness = value
-        else:
-            self._settings[index].value = value
+        self._settings[index].value = value
 
     def _run_animation(self):
         """

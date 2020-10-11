@@ -18,6 +18,6 @@ class Rainbowtheater(Rainbow):
                     for i in range(0, self.strip.numPixels(), 3):
                         self.strip.setPixelColor(i + q, self.color_wheel((i + j) % 255))
                     self.strip.show()
-                    await asyncio.sleep(self.delay.value / 1000)
+                    await asyncio.sleep(self.delay / 1000)
                     for i in range(0, self.strip.numPixels(), 3):
                         self.strip.setPixelColor(i + q, 0)

@@ -21,7 +21,7 @@ class Animation:
     Animation base class. All animations should inherit from here.
     """
 
-    __name__ = "Animation"
+    __name__ = "Animation"  # Name displayed on the webpanel
 
     def __init__(self, strip, brightness=255):
         """
@@ -30,14 +30,14 @@ class Animation:
         :param strip: LED light strip object
         """
         self.strip = strip
-        self._brightness = Slider("brightness", brightness, (0, 255))
+        self._brightness = Slider("Brightness", brightness, (0, 255), callback=lambda x: self.strip.setBrightness(x))
 
     @property
     def brightness(self):
         """
         :return: The brightness
         """
-        return self._brightness
+        return self._brightness.value
 
     @brightness.setter
     def brightness(self, value):
@@ -47,7 +47,6 @@ class Animation:
         :param value: 8bit value (0-255)
         :return: None
         """
-        value = int(value)
         self._brightness.value = value & 255
         self.strip.setBrightness(self._brightness.value)
 
@@ -87,6 +86,6 @@ class Animation:
         :return: List of Settings
         """
         settings = [
-            self.brightness
+            self._brightness
         ]
         return settings

@@ -24,7 +24,7 @@ class Fade(Animation):
         while True:
             for i in range(256):
                 set_strand(self.strip, self.color_wheel(i))
-            await asyncio.sleep(self.transition)
+            await asyncio.sleep(self.transition / 1000)
 
     def get_settings(self):
         settings = [

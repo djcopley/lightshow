@@ -5,6 +5,8 @@ from .animation import Animation, run_decorator
 
 
 class Fade(Animation):
+    __name__ = "Fade"
+
     def __init__(self, strip, brightness=255, transition=50):
         super().__init__(strip, brightness)
         self._transition = Slider("Transition", transition, (1, 100))

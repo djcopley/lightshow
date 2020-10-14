@@ -7,9 +7,9 @@ from .animation import Animation, run_decorator
 class Fade(Animation):
     __name__ = "Fade"
 
-    def __init__(self, strip, brightness=255, transition=50):
+    def __init__(self, strip, brightness=255, transition=100):
         super().__init__(strip, brightness)
-        self._transition = Slider("Transition", transition, (1, 100))
+        self._transition = Slider("Transition", transition, (1, 255))
 
     @property
     def transition(self):

@@ -1,5 +1,6 @@
 import threading
 import asyncio
+import yaml
 
 from rpi_ws281x import PixelStrip
 

@@ -10,6 +10,11 @@ def index():
     return render_template("index.html", version=__version__)
 
 
+@app.route("/settings/")
+def index():
+    return render_template("settings.html", version=__version__)
+
+
 @socketio.on("connect")
 def on_connect():
     # On connect emit the current settings

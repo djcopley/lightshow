@@ -1,11 +1,13 @@
 from flask import render_template
+
+from . import __version__
 from .app import app, socketio
 from .lightshow import lightshow
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", version=__version__)
 
 
 @socketio.on("connect")

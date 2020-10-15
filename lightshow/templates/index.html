@@ -6,32 +6,39 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
             integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href=" {{ url_for('static', filename='css/main.css') }} ">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-icon-144x144-precomposed.png') }}">
 </head>
 
 <body>
-    <header>
-        <h1>Lightshow Control Panel</h1>
-        <h2>Version 0.3 Alpha</h2>
-        <div>
-            <button id="power"></button>
-        </div>
-    </header>
-    <section>
-        <h3>Settings</h3>
-        <div id="settings">
 
-        </div>
-    </section>
-    <section>
-        <h3>Animations</h3>
-        <div id="animations">
+<header>
+    <h1>Lightshow Control Panel</h1>
+    <div>
+        <button id="power"></button>
+    </div>
+</header>
+<section>
+    <h3>Settings</h3>
+    <div id="settings">
 
-        </div>
-    </section>
+    </div>
+</section>
+<section>
+    <h3>Animations</h3>
+    <div id="animations">
+
+    </div>
+</section>
+
+<footer class="page-footer font-small blue">
+    <div class="footer-copyright text-center py-3">Version: {{version}}</div>
+</footer>
+
 </body>

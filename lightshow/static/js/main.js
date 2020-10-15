@@ -70,6 +70,10 @@ $(document).ready(function () {
         console.log("Connected to server");
     });
 
+    socket.on("disconnect", function () {
+        alert("Device has lost connection to server. Try refreshing.")
+    });
+
     $power.click(function () {
         socket.emit("power");
         return false;

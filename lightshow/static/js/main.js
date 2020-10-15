@@ -16,8 +16,9 @@ let animation = 0;
 let $power = $("#power");
 
 function load_power() {
+    console.log(state)
     $power.text("Turn ".concat(state ? "off" : "on"));
-    document.getElementById("power").className = state ? "button-selected" : "button";
+    $power[0].className = state ? "button-selected" : "button";
 }
 
 function load_settings() {

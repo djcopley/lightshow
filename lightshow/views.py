@@ -7,7 +7,7 @@ from .lightshow import lightshow
 
 @app.route("/")
 def index():
-    return render_template("index.html", version=__version__)
+    return render_template("home.html", version=__version__)
 
 
 @app.route("/settings/")

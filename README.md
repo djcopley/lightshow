@@ -3,7 +3,7 @@
 Lightshow is a collection of LED strip animations controlled by a single unified web interface. 
 Instructions and setup documentation to come. This project is still in early development.
 
-![](assets/lightshow.png?raw=true)
+![](assets/webpanel.png?raw=true)
 
 ## Supported Hardware
 - Raspberry Pi

@@ -23,27 +23,34 @@
     <!-- Custom JS -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-    <!-- FOR TESTING, REMOVE THIS WHEN DONE -->
-    <link type="text/css" href="../static/css/main.css">
-
-    <link type="text/css" href="{{ url_for('static', filename='css/main.css' }}">
+    <!-- Custom CSS -->
+    <link type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-icon-144x144-precomposed.png') }}">
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Lightshow</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" href="home.html">Home</a>
-            <a class="nav-item nav-link active" href="#">Settings<span class="sr-only">(current)</span></a>
+<div style="padding-bottom: 20px">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Lightshow</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#">Home</a>
+                <a class="nav-item nav-link active" href="settings.html">Settings<span class="sr-only">(current)</span></a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>
+
+<body>
+
+<footer class="page-footer sticky-footer font-small stylish-color">
+    <div class="footer-copyright text-center py-4"><span>Version: {{version}}</span></div>
+</footer>
 
 </body>

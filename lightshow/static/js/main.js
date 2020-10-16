@@ -17,8 +17,7 @@ $(document).ready(function () {
     let $power = $("#power");
 
     function load_power() {
-        $power.text("Turn ".concat(state ? "off" : "on"));
-        $power[0].className = state ? "button-selected" : "button";
+        $power[0].attr("fill",  state ? "green" : "red")
     }
 
     function load_settings() {

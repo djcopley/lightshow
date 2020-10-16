@@ -6,12 +6,12 @@ from .lightshow import lightshow
 
 
 @app.route("/")
-def index():
+def home():
     return render_template("home.html", version=__version__)
 
 
 @app.route("/settings/")
-def index():
+def settings():
     return render_template("settings.html", version=__version__)
 
 

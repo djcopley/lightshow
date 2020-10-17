@@ -28,12 +28,12 @@ $(document).ready(function () {
 
     $settings.find($(".setting")).on("change", function () {
         console.log("setting", $(this).attr("id"), $(this).attr("value"));
-        socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
+        // socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
     });
 
     $animations.find($(".animation-button")).on("click", function () {
         console.log("animation", $(this).attr("id"))
-        socket.emit("animation", $(this).attr("id"));
+        // socket.emit("animation", $(this).attr("id"));
     });
 
     // Handle server events

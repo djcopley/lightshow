@@ -53,7 +53,7 @@
         <label for="customRange11">Brightness</label>
         <div id="settings" class="justify-content-center">
             <div class="d-flex w-100">
-                <input type="range" class="custom-range" id="customRange11" min="0" max="200">
+                <input type="range" class="custom-range animation-setting" id="customRange11" min="0" max="200">
                 <span class="font-weight-bold text-primary ml-2 valueSpan"></span>
             </div>
         </div>
@@ -76,13 +76,13 @@
     </div>
     <div id="animations" class="d-flex flex-wrap justify-content-between my-4">
         <div class="flex-fill mr-2">
-            <button class="btn animation-button btn-primary">Rainbow</button>
+            <button id="0" class="btn animation-button btn-primary">Rainbow</button>
         </div>
         <div class="flex-fill mr-2">
-            <button class="btn animation-button btn-primary">Fade</button>
+            <button id="1" class="btn animation-button btn-primary">Fade</button>
         </div>
         <div class="flex-fill mr-2">
-            <button class="btn animation-button btn-primary">Strobe</button>
+            <button id="2" class="btn animation-button btn-primary">Strobe</button>
         </div>
     </div>
 </div>
@@ -92,13 +92,3 @@
 </footer>
 
 </body>
-
-<script>
-    const $valueSpan = $('.valueSpan');
-    const $value = $('#customRange11');
-    $valueSpan.html($value.val());
-    $value.on('input change', () => {
-        console.log("Update")
-        $valueSpan.html($value.val());
-    });
-</script>

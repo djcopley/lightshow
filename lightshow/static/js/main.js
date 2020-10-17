@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     $settings.find($("input")).on("change", function () {
         $(this).find(".valueSpan").html($(this).val());
-        console.log("setting", $(this).attr("id"), $(this).attr("value"));
+        console.log("setting", $(this).attr("id"), $(this).val());
         // socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
     });
 

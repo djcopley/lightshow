@@ -10,17 +10,54 @@ $(document).ready(function () {
         "<button class=\"btn btn-primary\" style=\"min-width: 150px; width: 100%; height: 65px;\">Rainbow</button>\n" +
         "</div>";
 
+    // SocketIO
+    let socket = io();
+    let animation = 0;
+
     // Selectors
-    let $power = $("#power");
+    const $power = $("#power");
+    const $animations = $("#animations"); // Animations div
+    const $settings = $("#settings"); // Settings div
 
-    // Variables
-    let ledState = false;
+    // Helper functions
 
+    // Handle client events
     $power.on("click", function () {
-        ledState = !ledState;
-        $power.attr("fill", ledState ? "green" : "red")
+        socket.emit("power");
     });
 
-    let socket = io();
+    $settings.find($(".setting")).on("change", function () {
+        console.log("setting", $(this).attr("id"), $(this).attr("value"));
+        socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
+    });
 
+    $animations.find($(".animation-button")).on("click", function () {
+        console.log("animation", $(this).attr("id"))
+        socket.emit("animation", $(this).attr("id"));
+    });
+
+    // Handle server events
+    socket.on("power", function (animationState) {
+        $power.attr("fill", animationState ? "green" : "red");
+    });
+
+    socket.on("settings", function (settings) {
+        $(this).find(".valueSpan").html($(this).val());
+    });
+
+    socket.on("animation", function (_animation) {
+        console.log("RECEIVED animation")
+
+        console.log($animations.find($(`#${animation}`)))
+
+        // animation = _animation;
+
+    });
+
+    socket.on("animations", function (animations) {
+        // Draw animation buttons
+        console.log("RECEIVED ANIMATIONS");
+        for (let i = 0; i < animations.length; i++) {
+        }
+    });
 });

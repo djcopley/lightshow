@@ -1,111 +1,63 @@
 $(document).ready(function () {
-    String.prototype.format = function () {
-        let a = this;
-        for (let k in arguments) {
-            a = a.replace(new RegExp("\\{" + k + "\\}", 'g'), arguments[k]);
-        }
-        return a
-    }
+    const sliderHtml =
+        "<div class=\"d-flex w-100\">\n" +
+        "<input type=\"range\" class=\"custom-range\" id=\"customRange11\" min=\"0\" max=\"200\">\n" +
+        "<span class=\"font-weight-bold text-primary ml-2 valueSpan\"></span>\n" +
+        "</div>";
 
+    const buttonHtml =
+        "<div class=\"flex-fill mr-2\">\n" +
+        "<button class=\"btn btn-primary\" style=\"min-width: 150px; width: 100%; height: 65px;\">Rainbow</button>\n" +
+        "</div>";
+
+    // SocketIO
     let socket = io();
-    let state; // Are the LEDS on or off
-    let settings = [];
-    let animations = [];
     let animation = 0;
 
-    // JQuerry selectors
-    let $power = $("#power");
+    // Selectors
+    const $power = $("#power");
+    const $animations = $("#animations"); // Animations div
+    const $settings = $("#settings"); // Settings div
 
-    function load_power() {
-        $power[0].attr("fill",  state ? "green" : "red")
-    }
+    // Helper functions
 
-    function load_settings() {
-        document.getElementById("settings").innerHTML = "";
-        for (let index = 0; index < settings.length; index++) {
-            switch (settings[index]["type"]) {
-                case "slider":
-                    document.getElementById("settings").innerHTML += "<div class=\"slidecontainer\">\n";
-                    document.getElementById("settings").innerHTML +=
-                        "<label htmlFor={0}>{0}</label>\n<input onChange='socket.emit(\"setting\", {4}, this.value)' class=slider type='range' step={5} min={1} max={2} value={3} id={0}>".format(
-                            settings[index]["name"],
-                            settings[index]["range"][0], settings[index]["range"][1], settings[index]["value"],
-                            index, settings[index]["step"]
-                        );
-                    document.getElementById("settings").innerHTML += "</div>";
-                    break;
-                case "color":
-                    document.getElementById("settings").innerHTML += "<div class=\"color\">\n";
-                    document.getElementById("settings").innerHTML +=
-                        "<label htmlFor={0}>{0}</label>\n<input onChange='socket.emit(\"setting\", {2}, this.value)' class=color type='color' value={1} id={0}>".format(
-                            settings[index]["name"], settings[index]["value"], index
-                        );
-                    document.getElementById("settings").innerHTML += "</div>";
-                    console.log(settings[index]["value"])
-                    break;
-                case "text":
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    function load_animations() {
-        document.getElementById("animations").innerHTML = "<div>";
-        for (let index = 0; index < animations.length; index++) {
-            if (index === animation) {
-                document.getElementById("animations").innerHTML +=
-                    "<button class='button-selected' onClick='socket.emit(\"animation\", {1})' id={0}>{0}</button>".format(animations[index], index);
-            } else {
-                document.getElementById("animations").innerHTML +=
-                    "<button class='button' onClick='socket.emit(\"animation\", {1})' id={0}>{0}</button>".format(animations[index], index);
-            }
-        }
-        document.getElementById("animations").innerHTML += "</div>";
-    }
-
-    socket.on("connect", function () {
-        console.log("Connected to server");
-    });
-
-    socket.on("disconnect", function () {
-        alert("Device has lost connection to server. Try refreshing.")
-    });
-
-    $power.click(function () {
+    // Handle client events
+    $power.on("click", function () {
         socket.emit("power");
-        return false;
     });
 
-    socket.on("power", function (_state) {
-        state = _state;
-        load_power();
+    $settings.find($(".setting")).on("change", function () {
+        console.log("setting", $(this).attr("id"), $(this).attr("value"));
+        socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
     });
 
-    socket.on("settings", function (_settings) {
-        settings = _settings;
-        load_settings();
+    $animations.find($(".animation-button")).on("click", function () {
+        console.log("animation", $(this).attr("id"))
+        socket.emit("animation", $(this).attr("id"));
     });
 
-    socket.on('animations', function (_animations) {
-        animations = _animations;
-        load_animations();
-    })
+    // Handle server events
+    socket.on("power", function (animationState) {
+        $power.attr("fill", animationState ? "green" : "red");
+    });
 
-    socket.on('animation', function (_animation) {
-        animation = _animation;
-        load_animations();
-    })
-})
+    socket.on("settings", function (settings) {
+        $(this).find(".valueSpan").html($(this).val());
+    });
 
+    socket.on("animation", function (_animation) {
+        console.log("RECEIVED animation")
 
-$(document).ready(function() {
-  const $valueSpan = $('.valueSpan');
-  const $value = $('#slider11');
-  $valueSpan.html($value.val());
-  $value.on('input change', () => {
+        console.log($animations.find($(`#${animation}`)))
 
-    $valueSpan.html($value.val());
-  });
+        // animation = _animation;
+
+    });
+
+    socket.on("animations", function (animations) {
+        // Draw animation buttons
+        console.log("RECEIVED ANIMATIONS");
+        for (let i = 0; i < animations.length; i++) {
+        }
+    });
 });

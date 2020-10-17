@@ -26,7 +26,8 @@ $(document).ready(function () {
         socket.emit("power");
     });
 
-    $settings.find($(".setting")).on("change", function () {
+    $settings.find($("input")).on("change", function () {
+        $(this).find(".valueSpan").html($(this).val());
         console.log("setting", $(this).attr("id"), $(this).attr("value"));
         // socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
     });
@@ -41,23 +42,18 @@ $(document).ready(function () {
         $power.attr("fill", animationState ? "green" : "red");
     });
 
-    socket.on("settings", function (settings) {
-        $(this).find(".valueSpan").html($(this).val());
-    });
-
-    socket.on("animation", function (_animation) {
-        console.log("RECEIVED animation")
-
-        console.log($animations.find($(`#${animation}`)))
-
-        // animation = _animation;
-
-    });
-
-    socket.on("animations", function (animations) {
-        // Draw animation buttons
-        console.log("RECEIVED ANIMATIONS");
-        for (let i = 0; i < animations.length; i++) {
-        }
-    });
+    // socket.on("settings", function (settings) {
+    //
+    // });
+    //
+    // socket.on("animation", function (_animation) {
+    //     // animation = _animation;
+    //
+    // });
+    //
+    // socket.on("animations", function (animations) {
+    //     // Draw animation buttons
+    //     for (let i = 0; i < animations.length; i++) {
+    //     }
+    // });
 });

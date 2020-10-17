@@ -2,7 +2,7 @@ from importlib import import_module
 
 
 def querry_animations():
-    return "rainbow", "rainbowtheater", "solid", "colorwipe", "strobe", "randomstrobe", "fade", "breathe"
+    return "solid", "rainbow", "rainbowtheater", "fade", "breathe", "strobe", "randomstrobe"
 
 
 def get_animation(name: str):

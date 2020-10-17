@@ -7,9 +7,9 @@ from .animation import Animation, run_decorator
 class Fade(Animation):
     __name__ = "Fade"
 
-    def __init__(self, strip, brightness=255, transition=100):
+    def __init__(self, strip, brightness=255, transition=25):
         super().__init__(strip, brightness)
-        self._transition = Slider("Transition", transition, (1, 255))
+        self._transition = Slider("Transition", transition, (1, 100))
 
     @property
     def transition(self):
@@ -24,7 +24,7 @@ class Fade(Animation):
         while True:
             for i in range(256):
                 set_strand(self.strip, self.color_wheel(i))
-            await asyncio.sleep(self.transition / 1000)
+                await asyncio.sleep(self.transition / 1000)
 
     def get_settings(self):
         settings = [

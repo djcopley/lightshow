@@ -1,8 +1,10 @@
 import threading
 import asyncio
 
+
 from rpi_ws281x import PixelStrip
 
+from .config import *
 from .animations import *
 
 
@@ -117,6 +119,6 @@ class Lightshow:
 
 
 # Start the strip and create a lightstrip object
-_strip = PixelStrip(100, 21)
+_strip = PixelStrip(NUM_PIXELS, LED_RPI_PIN)
 _strip.begin()
 lightshow = Lightshow(_strip)  # PixelCount, PinNumber

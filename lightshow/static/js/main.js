@@ -26,8 +26,8 @@ $(document).ready(function () {
         socket.emit("power");
     });
 
-    $settings.find($("input")).on("change", function () {
-        $(this).find(".valueSpan").html($(this).val());
+    $settings.find($(".slider-setting")).on("change", function () {
+        $(this).find(".valueSpan").html($(this).find("input").val());
         console.log("setting", $(this).attr("id"), $(this).val());
         // socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
     });

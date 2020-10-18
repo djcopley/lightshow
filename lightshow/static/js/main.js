@@ -3,7 +3,7 @@ $(document).ready(function () {
     const socket = io();
 
     // Variables
-    let animation;
+    let animation = $("");
 
     // Selectors
     const $power = $("#power");

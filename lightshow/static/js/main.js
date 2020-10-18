@@ -1,18 +1,9 @@
 $(document).ready(function () {
-    const sliderHtml =
-        "<div class=\"d-flex w-100\">\n" +
-        "<input type=\"range\" class=\"custom-range\" id=\"customRange11\" min=\"0\" max=\"200\">\n" +
-        "<span class=\"font-weight-bold text-primary ml-2 valueSpan\"></span>\n" +
-        "</div>";
-
-    const buttonHtml =
-        "<div class=\"flex-fill mr-2\">\n" +
-        "<button class=\"btn btn-primary\" style=\"min-width: 150px; width: 100%; height: 65px;\">Rainbow</button>\n" +
-        "</div>";
-
     // SocketIO
-    let socket = io();
-    let animation = 0;
+    const socket = io();
+
+    // Variables
+    let animation;
 
     // Selectors
     const $power = $("#power");
@@ -26,15 +17,13 @@ $(document).ready(function () {
         socket.emit("power");
     });
 
-    $settings.find($(".slider-setting")).on("create change", function () {
-        $(this).find(".valueSpan").html($(this).find("input").val());
-        console.log("setting", $(this).attr("id"), $(this).val());
-        // socket.emit("setting", $(this).attr("id"), $(this).attr("value"));
+    $settings.find($("input")).on("change", function () {
+        // $(this).find(".valueSpan").html($(this).find("input").val());
+        socket.emit("setting", $(this).attr("settings-index"), $(this).attr("value"));
     });
 
     $animations.find($(".animation-button")).on("click", function () {
-        console.log("animation", $(this).attr("id"))
-        // socket.emit("animation", $(this).attr("id"));
+        socket.emit("animation", $(this).attr("animations-index"));
     });
 
     // Handle server events
@@ -42,18 +31,57 @@ $(document).ready(function () {
         $power.attr("fill", animationState ? "green" : "red");
     });
 
-    // socket.on("settings", function (settings) {
-    //
-    // });
-    //
-    // socket.on("animation", function (_animation) {
-    //     // animation = _animation;
-    //
-    // });
-    //
-    // socket.on("animations", function (animations) {
-    //     // Draw animation buttons
-    //     for (let i = 0; i < animations.length; i++) {
-    //     }
-    // });
+    // Render settings HTML
+    socket.on("settings", function (settings) {
+        let html = "";
+
+        for (let index = 0; index < settings.length; index++) {
+            switch (settings[index]["type"]) {
+                case "slider":
+                    html +=
+                        `<div class="d-flex slider-setting">\n` +
+                        `<label> ${settings[index]["name"]}\n` +
+                        `<input type="range" class="custom-range" settings-index="${index}" ` +
+                        `value=${settings[index]["value"]} min="${settings[index]["range"][0]}" ` +
+                        `max="${settings[index]["range"][1]}" step="${settings[index]["step"]}">\n` +
+                        `</label>\n` +
+                        `<span class="font-weight-bold text-primary ml-2 valueSpan">${settings[index]["value"]}` +
+                        `</span>\n` +
+                        `</div>\n`;
+                    break;
+                case "color":
+                    html +=
+                        `<div class="d-flex color-setting">\n` +
+                        `<label> ${settings[index]["name"]}\n` +
+                        `<input type="color" settings-index="${index}" value="${settings[index]["value"]}">\n` +
+                        `</label>\n` +
+                        `</div>\n`;
+                    break;
+                default:
+                    console.log(`Unknown settings type: ${settings[index]["type"]}`);
+                    break;
+            }
+
+            $settings.html(html);
+        }
+    });
+
+    socket.on("animation", function (_animation) {
+        animation.toggleClass("btn-outline-primary");
+        animation = $animations.find(`[animation_index=${_animation}]`);
+        animation.toggleClass("btn-outline-primary");
+    });
+
+    socket.on("animations", function (animations) {
+        // Draw animation buttons
+        for (let index = 0; index < animations.length; index++) {
+            $animations.html(
+                `<div class="flex-fill mr-2">\n` +
+                `<button animation-index="${index}" class="btn btn-primary animation-button">\n` +
+                `${animations[index]}\n` +
+                `</button>\n` +
+                `</div>\n`
+            );
+        }
+    });
 });

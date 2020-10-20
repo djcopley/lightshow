@@ -40,7 +40,7 @@ $(document).ready(function () {
                 case "slider":
                     html +=
                         `<div class="d-flex slider-setting">\n` +
-                        `<label> ${settings[index]["name"]}\n` +
+                        `<label class="w-100"> ${settings[index]["name"]}\n` +
                         `<input type="range" class="custom-range" settings-index="${index}" ` +
                         `value=${settings[index]["value"]} min="${settings[index]["range"][0]}" ` +
                         `max="${settings[index]["range"][1]}" step="${settings[index]["step"]}">\n` +
@@ -52,7 +52,7 @@ $(document).ready(function () {
                 case "color":
                     html +=
                         `<div class="d-flex color-setting">\n` +
-                        `<label> ${settings[index]["name"]}\n` +
+                        `<label class="w-100"> ${settings[index]["name"]}\n` +
                         `<input type="color" settings-index="${index}" value="${settings[index]["value"]}">\n` +
                         `</label>\n` +
                         `</div>\n`;
@@ -74,14 +74,15 @@ $(document).ready(function () {
 
     socket.on("animations", function (animations) {
         // Draw animation buttons
+        let html = "";
         for (let index = 0; index < animations.length; index++) {
-            $animations.html(
+            html +=
                 `<div class="flex-fill mr-2">\n` +
                 `<button animation-index="${index}" class="btn btn-primary animation-button">\n` +
                 `${animations[index]}\n` +
                 `</button>\n` +
-                `</div>\n`
-            );
+                `</div>\n`;
         }
+        $animations.html(html);
     });
 });

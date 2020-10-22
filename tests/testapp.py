@@ -16,12 +16,16 @@ __version__ = "testing"
 class TestLightshow:
     def __init__(self):
         self.state = False
-        self.animations = ["Rainbow", "Strobe"]
-        self.settings = [{"name": "Brightness", "type": "slider", "range": (0, 255), "step": 1, "value": 255}]
-        self.animation = None
+        self.animations = ["Rainbow", "Rainbow Theater", "Fade", "Solid", "Strobe", "Random Strobe"]
+        self.settings = [{"name": "Brightness", "type": "slider", "range": (0, 255), "step": 1, "value": 255},
+                         {"name": "Delay", "type": "slider", "range": (0, 100), "step": 1, "value": 25},
+                         {"name": "Frequency", "type": "slider", "range": (0, 100), "step": 1, "value": 10},
+                         {"name": "Color", "type": "color", "value": "#ffffff"}]
+        self.animation = 0
 
     def update_setting(self, index, value):
-        print(index, self.settings[index], value)
+        print(type(value))
+        self.settings[index]["value"] = value
 
 
 lightshow = TestLightshow()

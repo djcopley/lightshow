@@ -17,16 +17,20 @@ $(document).ready(function () {
         socket.emit("power");
     });
 
-    $settings.find($("input")).on("change", function () {
-        // $(this).find(".valueSpan").html($(this).find("input").val());
-        socket.emit("setting", $(this).attr("settings-index"), $(this).attr("value"));
+    $settings.on("input", "input.custom-range", function () {
+        $(this).parent().find(".valueSpan").html($(this).val());
     });
 
-    $animations.find($(".animation-button")).on("click", function () {
-        socket.emit("animation", $(this).attr("animations-index"));
+    $settings.on("change", "input", function () {
+        socket.emit("setting", Number($(this).attr("setting-index")), $(this).val());
     });
 
-    // Handle server events
+    $animations.on("click", ".animation-button", function () {
+        console.log(`${$(this).attr("animation-index")}`)
+        socket.emit("animation", Number($(this).attr("animation-index")));
+    });
+
+    // Handle server event,s
     socket.on("power", function (animationState) {
         $power.attr("fill", animationState ? "green" : "red");
     });
@@ -40,20 +44,22 @@ $(document).ready(function () {
                 case "slider":
                     html +=
                         `<div class="d-flex slider-setting">\n` +
-                        `<label class="w-100"> ${settings[index]["name"]}\n` +
-                        `<input type="range" class="custom-range" settings-index="${index}" ` +
+                        `<label class="w-100"> ${settings[index]["name"]}:  ` +
+                        `<span class="font-weight-bold text-primary valueSpan">${settings[index]["value"]}` +
+                        `</span>\n` +
+                        `<input type="range" class="custom-range" setting-index="${index}" ` +
                         `value=${settings[index]["value"]} min="${settings[index]["range"][0]}" ` +
                         `max="${settings[index]["range"][1]}" step="${settings[index]["step"]}">\n` +
                         `</label>\n` +
-                        `<span class="font-weight-bold text-primary ml-2 valueSpan">${settings[index]["value"]}` +
-                        `</span>\n` +
+
                         `</div>\n`;
                     break;
                 case "color":
                     html +=
                         `<div class="d-flex color-setting">\n` +
                         `<label class="w-100"> ${settings[index]["name"]}\n` +
-                        `<input type="color" settings-index="${index}" value="${settings[index]["value"]}">\n` +
+                        `<input class="color-setting primary-color" type="color" setting-index="${index}" ` +
+                        `value="${settings[index]["value"]}">\n` +
                         `</label>\n` +
                         `</div>\n`;
                     break;
@@ -68,7 +74,7 @@ $(document).ready(function () {
 
     socket.on("animation", function (_animation) {
         animation.toggleClass("btn-outline-primary");
-        animation = $animations.find(`[animation_index=${_animation}]`);
+        animation = $animations.find(`[animation-index=${_animation}]`);
         animation.toggleClass("btn-outline-primary");
     });
 

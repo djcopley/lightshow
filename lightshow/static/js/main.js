@@ -30,6 +30,10 @@ $(document).ready(function () {
         socket.emit("animation", Number($(this).attr("animation-index")));
     });
 
+    socket.on("disconnect", function() {
+        alert("Lost connection to server. Try refreshing the page.")
+    });
+
     // Handle server event,s
     socket.on("power", function (animationState) {
         $power.attr("fill", animationState ? "green" : "red");

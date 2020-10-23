@@ -87,7 +87,7 @@ class Color(Setting):
         pixel = 0
         for color_val in pixel_color_rgb(self._value):
             pixel <<= 8
-            pixel |= color_val * other
+            pixel |= int(color_val * other)
         color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
         color._value = pixel
         return color
@@ -96,7 +96,7 @@ class Color(Setting):
         pixel = 0
         for color_val in pixel_color_rgb(self._value):
             pixel <<= 8
-            pixel |= color_val / other
+            pixel |= int(color_val / other)
         color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
         color._value = pixel
         return color

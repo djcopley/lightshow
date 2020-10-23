@@ -43,7 +43,7 @@ class Breathe(Animation):
 
         for i in list(range(0, brightness_steps + 1)) + list(reversed(range(0, brightness_steps))):
             for j in range(self.strip.numPixels()):
-                self.strip.setPixelColor(j, (self.color * (i / brightness_steps)).value)
+                self.strip.setPixelColor(j, (self._color * (i / brightness_steps)).value)
             self.strip.show()
             await asyncio.sleep(delay_time)
 

@@ -17,16 +17,16 @@ class Breathe(Animation):
         """
 
         super().__init__(strip, brightness)
-        self._freq = Slider("Frequency", freq, (1, 50))
+        self._delay = Slider("Delay", freq, (1, 50))
         self._color = Color("Color", color)
 
     @property
-    def freq(self):
-        return self._freq.value
+    def delay(self):
+        return self._delay.value
 
-    @freq.setter
-    def freq(self, value):
-        self._freq.value = value
+    @delay.setter
+    def delay(self, value):
+        self._delay.value = value
 
     @property
     def color(self):
@@ -38,7 +38,7 @@ class Breathe(Animation):
 
     async def _breathe(self):
         # 3 bytes per binary packet, 24 binary packets per pixel, 800 kbps transfer rate
-        delay_time = 72 * self.strip.numPixels() / 800000
+        delay_time = self.delay * 72 * self.strip.numPixels() / 800000
         brightness_steps = int(1 / delay_time)
 
         for i in list(range(0, brightness_steps + 1)) + list(reversed(range(0, brightness_steps))):
@@ -54,7 +54,7 @@ class Breathe(Animation):
 
     def get_settings(self):
         settings = [
-            self._freq,
+            self._delay,
             self._color
         ]
         return super().get_settings() + settings

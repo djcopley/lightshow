@@ -88,12 +88,14 @@ class Color(Setting):
         for color_val in pixel_color_rgb(self._value):
             self._value <<= 8
             self._value |= color_val * other
+        return Color(self.name, self._value, dtype=self.dtype, callback=self.callback)
 
     def __truediv__(self, other):
         self._value = 0
         for color_val in pixel_color_rgb(self._value):
             self._value <<= 8
             self._value |= color_val / other
+        return Color(self.name, self._value, dtype=self.dtype, callback=self.callback)
 
     @property
     def value(self):

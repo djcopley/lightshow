@@ -84,18 +84,22 @@ class Color(Setting):
         self.html_color = value
 
     def __mul__(self, other):
-        self._value = 0
+        pixel = 0
         for color_val in pixel_color_rgb(self._value):
-            self._value <<= 8
-            self._value |= color_val * other
-        return Color(self.name, self._value, dtype=self.dtype, callback=self.callback)
+            pixel <<= 8
+            pixel |= color_val * other
+        color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
+        color._value = pixel
+        return color
 
     def __truediv__(self, other):
-        self._value = 0
+        pixel = 0
         for color_val in pixel_color_rgb(self._value):
-            self._value <<= 8
-            self._value |= color_val / other
-        return Color(self.name, self._value, dtype=self.dtype, callback=self.callback)
+            pixel <<= 8
+            pixel |= color_val / other
+        color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
+        color._value = pixel
+        return color
 
     @property
     def value(self):

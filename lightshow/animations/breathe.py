@@ -37,17 +37,11 @@ class Breathe(Animation):
         self._color.value = value
 
     async def _breathe(self):
-        max_brightness = 255
         # 3 bytes per binary packet, 24 binary packets per pixel, 800 kbps transfer rate
         delay_time = 72 * self.strip.numPixels() / 800000
         brightness_steps = int(1 / delay_time)
 
-        for i in range(0, brightness_steps + 1):
-            for j in range(self.strip.numPixels()):
-                self.strip.setPixelColor(j, self.color * i / brightness_steps)
-            self.strip.show()
-            await asyncio.sleep(delay_time)
-        for i in reversed(range(0, brightness_steps)):
+        for i in list(range(0, brightness_steps + 1)) + list(reversed(range(0, brightness_steps))):
             for j in range(self.strip.numPixels()):
                 self.strip.setPixelColor(j, self.color * i / brightness_steps)
             self.strip.show()

@@ -22,6 +22,16 @@ def pixel_color(r, g, b, w=0):
     return ((w & 255) << 24) | ((r & 255) << 16) | ((b & 255) << 8) | (g & 255)
 
 
+def pixel_color_rgb(pixel_color):
+    """
+    Translates pixel_color to WRGB format
+
+    :param pixel_color: Pixel color in int format
+    :return:  Returns pixels in the format WRGB
+    """
+    return ((pixel_color >> 24) & 0xFF, (pixel_color >> 16) & 0xFF, (pixel_color) & 0xFF, (pixel_color >> 8) & 0xFF)
+
+
 def clear_strand(strip):
     set_strand(strip, pixel_color(0, 0, 0))
 
@@ -72,6 +82,18 @@ class Color(Setting):
     def __init__(self, name, value, dtype=str, callback=None):
         super().__init__(name, value, dtype, callback)
         self.html_color = value
+
+    def __mul__(self, other):
+        self._value = 0
+        for color_val in pixel_color_rgb(self._value):
+            self._value <<= 8
+            self._value |= color_val * other
+
+    def __truediv__(self, other):
+        self._value = 0
+        for color_val in pixel_color_rgb(self._value):
+            self._value <<= 8
+            self._value |= color_val / other
 
     @property
     def value(self):

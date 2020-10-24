@@ -1,6 +1,7 @@
 import threading
 import asyncio
-
+import os
+import elevate
 
 from rpi_ws281x import PixelStrip
 
@@ -105,6 +106,7 @@ class Lightshow:
 
         :return:
         """
+
         # The animations are coroutines
         async def run_task(run_thread):
             run_thread.task = asyncio.create_task(self._animations[self._animation].run())
@@ -117,6 +119,10 @@ class Lightshow:
             self.state = False
             self.state = True
 
+
+# Elevate to root permissions for GPIO access
+if os.getuid() != 0:
+    elevate.elevate()
 
 # Start the strip and create a lightstrip object
 _strip = PixelStrip(NUM_PIXELS, LED_RPI_PIN)

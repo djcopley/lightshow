@@ -14,6 +14,7 @@ when they happen.*
 ```bash
 git clone https://github.com/djcopley/lightshow.git
 cd lightshow
+python3 setup.py install
 export FLASK_APP=lightshow.main
 sudo -E flask run -h 0.0.0.0 -p 80
 ```

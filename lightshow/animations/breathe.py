@@ -37,7 +37,7 @@ class Breathe(Animation):
         self._color.value = value
 
     def _scale_brightness(self, scale_value, max_steps):
-        return self._color * (scale_value / max_steps).value
+        return (self._color * (scale_value / max_steps)).value
 
     async def _breathe(self):
         # 3 bits per binary value, 24 binary values per pixel (RGB), 800 kbps transfer rate

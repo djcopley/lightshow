@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.fftpack
 
-x = np.linspace(0, 10, 100)
+x = np.linspace(0, 10, 200)
 
 
 class BlitManager:
@@ -80,8 +81,13 @@ class BlitManager:
 # make a new figure
 fig, ax = plt.subplots()
 # add a line
-(ln,) = ax.plot(x, np.sin(x), animated=True)
-print(np.sin(x))
+from collections import deque
+
+y = deque((len(x)) * [0], len(x))
+# y = np.sin(x) + np.sin(2*x)
+# (ln,) = ax.plot(x, np.abs(scipy.fft.rfftn(np.sin(y))), animated=True)
+(ln,) = ax.plot(np.linspace(0, 10, 101), np.fft.rfft(y), animated=True)
+plt.ylim((-2**12, 2**12))
 # add a frame number
 fr_number = ax.annotate(
     "0",
@@ -97,12 +103,21 @@ bm = BlitManager(fig.canvas, [ln, fr_number])
 # make sure our window is on the screen and drawn
 plt.show(block=False)
 plt.pause(.1)
+import scipy
 
-for j in range(1000):
-    # update the artists
-    with open("/dev/urandom", "rb") as f:
-        ln.set_ydata(int.from_bytes(f.read(1), byteorder="big", signed=True) / 255)
-    fr_number.set_text("frame: {j}".format(j=j))
-    # tell the blitting manager to do it's thing
-    bm.update()
-    plt.pause(.5)
+with open("./data.bin", "rb") as f:
+    f.seek(0xB8020)
+    for j in range(10000):
+        # print(int.from_bytes(f.read(2), byteorder="big", signed=True))
+        # update the artists
+        y.appendleft(int.from_bytes(f.read(2), byteorder="little", signed=True))
+        ln.set_ydata(np.fft.rfft(y).real)
+        # ln.set_ydata(np.abs(scipy.fft.rfftn(np.sin(x + (j / len(x) * np.pi) + np.sin(100*x + (j / len(x) * np.pi))))))
+        # ln.set_ydata(np.sin(x + (j / len(x) * np.pi) + np.sin(2*x + (j / len(x) * np.pi))))
+        # ln.set_ydata((np.sin(x + (j / len(x) * np.pi))))
+
+        fr_number.set_text("frame: {j}".format(j=j))
+#         # tell the blitting manager to do it's thing
+        bm.update()
+        # plt.pause(.1)
+plt.show()

@@ -2,7 +2,7 @@ from importlib import import_module
 
 
 def querry_animations():
-    return "rainbow", "rainbowtheater", "fade", "solid", "strobe", "randomstrobe"
+    return "solid", "rainbow", "rainbowtheater", "fade", "breathe", "strobe", "randomstrobe"
 
 
 def get_animation(name: str):
@@ -20,6 +20,16 @@ def pixel_color(r, g, b, w=0):
     :return: int of color data
     """
     return ((w & 255) << 24) | ((r & 255) << 16) | ((b & 255) << 8) | (g & 255)
+
+
+def pixel_color_rgb(pixel_color):
+    """
+    Translates pixel_color to WRGB format
+
+    :param pixel_color: Pixel color in int format
+    :return:  Returns pixels in the format WRGB
+    """
+    return ((pixel_color >> 24) & 0xFF, (pixel_color >> 16) & 0xFF, (pixel_color) & 0xFF, (pixel_color >> 8) & 0xFF)
 
 
 def clear_strand(strip):
@@ -72,6 +82,24 @@ class Color(Setting):
     def __init__(self, name, value, dtype=str, callback=None):
         super().__init__(name, value, dtype, callback)
         self.html_color = value
+
+    def __mul__(self, other):
+        pixel = 0
+        for color_val in pixel_color_rgb(self._value):
+            pixel <<= 8
+            pixel |= int(color_val * other)
+        color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
+        color._value = pixel
+        return color
+
+    def __truediv__(self, other):
+        pixel = 0
+        for color_val in pixel_color_rgb(self._value):
+            pixel <<= 8
+            pixel |= int(color_val / other)
+        color = Color(self.name, "#ffffff", dtype=self.dtype, callback=self.callback)
+        color._value = pixel
+        return color
 
     @property
     def value(self):

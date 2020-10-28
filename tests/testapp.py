@@ -68,4 +68,5 @@ def handle_animations(animation):
     socketio.emit("settings", lightshow.settings)
 
 
-socketio.run(app)
+if __name__ == '__main__':
+    socketio.run(app)

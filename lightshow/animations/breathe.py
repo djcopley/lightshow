@@ -46,7 +46,7 @@ class Breathe(Animation):
         minimum_steps = int(1 / update_delay)
 
         # 4.4 for range of 1 to 5 seconds; 50 for range of speed inputs
-        brightness_steps = minimum_steps + 4.4 * (50 - self.speed)
+        brightness_steps = int(minimum_steps + 4.4 * (50 - self.speed))
 
         for i in list(range(0, brightness_steps + 1)) + list(reversed(range(0, brightness_steps))):
             for j in range(self.strip.numPixels()):

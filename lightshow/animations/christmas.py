@@ -15,7 +15,7 @@ class Christmas(Rainbow):
         self._adjacent_leds = Slider("Adjacent LEDs", adjacent_leds, (1, 10))
 
         # Red and green
-        self._colors = [pixel_color(255, 255, 255), pixel_color(0, 255, 0)]
+        self._colors = [pixel_color(255, 0, 0), pixel_color(255, 255, 255)]
 
     @property
     def adjacent_leds(self):
@@ -29,7 +29,8 @@ class Christmas(Rainbow):
     async def run(self):
         while True:
             for color_idx, color in enumerate(self._colors):
-                for pixel_offset in range(color_idx, self.strip.numPixels(), self.adjacent_leds):
+                for pixel_offset in range(color_idx * self.adjacent_leds, self.strip.numPixels(),
+                                          self.adjacent_leds * len(self._colors)):
                     for contiguous_color in range(self.adjacent_leds):
                         self.strip.setPixelColor(pixel_offset + contiguous_color, color)
             self._colors = self._colors[::-1]

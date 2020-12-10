@@ -26,7 +26,6 @@ $(document).ready(function () {
     });
 
     $animations.on("click", ".animation-button", function () {
-        console.log(`${$(this).attr("animation-index")}`)
         socket.emit("animation", Number($(this).attr("animation-index")));
     });
 

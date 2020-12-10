@@ -24,7 +24,6 @@ class TestLightshow:
         self.animation = 0
 
     def update_setting(self, index, value):
-        print(type(value))
         self.settings[index]["value"] = value
 
 

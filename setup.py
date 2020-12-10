@@ -7,7 +7,11 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'flask',
+        "waitress",
+        "flask",
+        "flask_socketio",
+        "flask_restful",
+        "rpi_ws281x",
     ],
     setup_requires=[
         "setuptools_scm"

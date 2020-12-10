@@ -12,7 +12,6 @@ setup(
         "flask_socketio",
         "flask_restful",
         "rpi_ws281x",
-        "elevate"
     ],
     setup_requires=[
         "setuptools_scm"
